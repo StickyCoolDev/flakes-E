@@ -2,18 +2,20 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-RUN pip install uv
-
+# Copy dependency files first
 COPY pyproject.toml uv.lock ./
 
-RUN uv sync --frozen --system
+# Install dependencies
+RUN pip install uv
+RUN uv sync
 
+# Copy the rest of your application code
 COPY . .
 
 EXPOSE 8000
 
-# Run migrations
-RUN python manage.py migrate
+# Run migrations (now that Django is correctly installed)
+RUN uv run manage.py migrate
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "--worker-class", "uvicorn.workers.UvicornWorker", "project_name.wsgi:application"]
+CMD ["uv","run", "uvicorn", "Flakes_E.wsgi:application", "--host", "0.0.0.0", "--port", "8000"]
 
