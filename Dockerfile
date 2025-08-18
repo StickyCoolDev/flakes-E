@@ -17,5 +17,4 @@ EXPOSE 8000
 # Run migrations (now that Django is correctly installed)
 RUN uv run manage.py migrate
 
-CMD ["uv","run", "uvicorn", "Flakes_E.wsgi:application", "--host", "0.0.0.0", "--port", "8000"]
-
+CMD ["uv","run", "uvicorn", "Flakes_E.asgi:application", "--host", "0.0.0.0", "--port", "8000"]
