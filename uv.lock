@@ -61,6 +61,16 @@ wheels = [
 ]
 
 [[package]]
+name = "django-allauth"
+version = "65.11.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "asgiref" },
+    { name = "django" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ac/82/e6f607b0bad524d227f6e5aaffdb5e2b286f6ab1b4b3151134ae2303c2d6/django_allauth-65.11.1.tar.gz", hash = "sha256:e95d5234cccaf92273d315e1393cc4626cb88a19d66a1bf0e81f89f7958cfa06", size = 1915592, upload-time = "2025-08-27T18:05:05.581Z" }
+
+[[package]]
 name = "djlint"
 version = "1.36.4"
 source = { registry = "https://pypi.org/simple" }
@@ -114,6 +124,7 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "django" },
+    { name = "django-allauth" },
     { name = "dotenv" },
     { name = "uvicorn" },
 ]
@@ -126,6 +137,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "django", specifier = ">=5.2.5" },
+    { name = "django-allauth", specifier = ">=65.11.1" },
     { name = "dotenv", specifier = ">=0.9.9" },
     { name = "uvicorn", specifier = ">=0.35.0" },
 ]

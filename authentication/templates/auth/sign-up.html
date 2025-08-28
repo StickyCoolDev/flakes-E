@@ -18,6 +18,9 @@
                 --text-light: #f9f9f9;
                 --text-dark: #333;
                 --background-light: #FFFFFF;
+                --border-color: #ddd;
+                --shadow-light: rgba(0, 0, 0, 0.1);
+                --shadow-heavy: rgba(0, 0, 0, 0.2);
             }
 
             body {
@@ -33,10 +36,10 @@
                 box-sizing: border-box;
             }
 
-            .login-container {
+            .container {
                 width: 100%;
                 text-align: center;
-                max-width: 400px; /* Added max-width for better desktop display */
+                max-width: 400px;
             }
 
             .logo {
@@ -54,47 +57,63 @@
                 font-size: 1em;
                 margin-top: 5px;
                 font-weight: 400;
+                opacity: 0.8;
             }
 
-            .login-content {
+            .form-card {
                 background-color: var(--background-light);
                 border-radius: 20px;
                 padding: 40px;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 10px 30px var(--shadow-light);
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                justify-content: center;
+                color: var(--text-dark);
             }
 
-            .login-content h2 {
+            .form-card h2 {
                 font-size: 1.8em;
-                color: var(--text-dark);
                 margin-top: 0;
                 margin-bottom: 25px;
             }
 
             .input-group {
-                gap: 10px;
                 position: relative;
                 margin-bottom: 20px;
                 width: 100%;
             }
 
+            .input-group label {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                left: 15px;
+                color: #aaa;
+                font-size: 1.1em;
+                transition: color 0.2s ease, font-size 0.2s ease;
+            }
+
             .input-group input {
-                width: calc(100% - 30px); /* Adjusted width to account for icon */
-                padding: 15px 15px 15px 45px; /* Adjust padding for icon */
-                border: 1px solid #ddd;
+                width: 100%;
+                padding: 15px;
+                padding-left: 45px;
+                border: 1px solid var(--border-color);
                 border-radius: 50px;
                 font-size: 1em;
                 color: var(--text-dark);
+                box-sizing: border-box;
                 transition: border-color 0.2s ease, box-shadow 0.2s ease;
             }
-
+            
             .input-group input:focus {
                 outline: none;
                 border-color: var(--primary-color);
                 box-shadow: 0 0 0 3px rgba(189, 99, 47, 0.2);
+            }
+
+            .input-group input:focus + label,
+            .input-group input:not(:placeholder-shown) + label {
+                color: var(--primary-color);
             }
 
             .input-group .icon {
@@ -104,12 +123,11 @@
                 transform: translateY(-50%);
                 color: #aaa;
                 pointer-events: none;
+                z-index: 1;
             }
-            
-            /* General form styling */
+
             form {
                 width: 100%;
-                text-align: center;
             }
 
             .btn-group {
@@ -136,7 +154,7 @@
 
             .btn:hover {
                 transform: translateY(-3px);
-                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 8px 20px var(--shadow-heavy);
             }
 
             .btn-primary {
@@ -147,70 +165,90 @@
 
             .btn-secondary {
                 background-color: transparent;
-                border: 1px solid var(--primary-color);
-                color: var(--primary-color);
+                border: 1px solid var(--border-color);
+                color: var(--text-dark);
+                box-shadow: 0 5px 15px var(--shadow-light);
             }
 
-            .forgot-password {
-                margin-top: 15px;
-                font-size: 0.9em;
+            .or-divider {
+                display: flex;
+                align-items: center;
+                text-align: center;
+                width: 100%;
+                margin: 20px 0;
             }
 
-            .forgot-password a {
-                color: var(--primary-color);
-                text-decoration: none;
-                transition: color 0.2s ease;
+            .or-divider::before,
+            .or-divider::after {
+                content: '';
+                flex: 1;
+                border-bottom: 1px solid var(--border-color);
             }
 
-            .forgot-password a:hover {
-                text-decoration: underline;
+            .or-divider:not(:empty)::before {
+                margin-right: .25em;
             }
 
-            /* Responsive adjustments */
+            .or-divider:not(:empty)::after {
+                margin-left: .25em;
+            }
+
             @media (max-width: 600px) {
                 .logo h1 {
                     font-size: 2.5em;
                 }
-                .login-content {
+                .form-card {
                     padding: 30px 20px;
                 }
-                .login-content h2 {
+                .form-card h2 {
                     font-size: 1.5em;
-                }
-                .input-group input {
-                    padding: 12px 12px 12px 40px;
-                }
-                .input-group .icon {
-                    left: 12px;
-                }
-                .btn {
-                    padding: 12px;
-                    font-size: 0.95em;
                 }
             }
         </style>
     </head>
     <body>
-        <div class="login-container">
+        <div class="container">
             <div class="logo">
                 <h1>Flakes E</h1>
                 <p>finished 10 seasons? good because we have 10 more</p>
             </div>
-            <div class="login-content">
-                <h2>Sign Up</h2>
-                <form>
+            <div class="form-card">
+                <h2>Create Account</h2>
+                <form action="#" method="post">
                     <div class="input-group">
+                        <input type="email" id="email" name="email" placeholder=" " required>
                         <i class="fas fa-envelope icon"></i>
-                        <input type="email" placeholder="Email" required>
+                        <label for="email">Email</label>
                     </div>
                     <div class="input-group">
+                        <input type="password"
+                               id="password"
+                               name="password"
+                               placeholder=" "
+                               required>
                         <i class="fas fa-lock icon"></i>
-                        <input type="password" placeholder="Password" required>
+                        <label for="password">Password</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="password"
+                               id="confirm-password"
+                               name="confirm-password"
+                               placeholder=" "
+                               required>
+                        <i class="fas fa-lock icon"></i>
+                        <label for="confirm-password">Confirm Password</label>
                     </div>
                     <div class="btn-group">
-                        <button type="submit" class="btn btn-secondary">Sign Up</button>
+                        <button type="submit" class="btn btn-primary">Sign Up</button>
                     </div>
                 </form>
+                <div class="or-divider">Or</div>
+                <div>
+                    <a href="#" class="btn btn-secondary">
+                        <i class="fab fa-google"></i>
+                        Sign up with Google
+                    </a>
+                </div>
             </div>
         </div>
     </body>
