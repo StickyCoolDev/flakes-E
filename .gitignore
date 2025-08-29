@@ -19,6 +19,7 @@ eggs/
 
 # Django stuff:
 *.sqlite3 # local database file
+db.sqlite3
 /static/ # if you have a local static directory
 
 # Virtual environment

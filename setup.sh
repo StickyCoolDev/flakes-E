@@ -17,7 +17,7 @@ cat << 'EOF' > "$PRE_COMMIT_HOOK_PATH"
 
 echo "Running djlint formatting"
 uv run djlint --reformat .
-
+git add .
 EOF
 
 # Make the pre-commit hook executable
