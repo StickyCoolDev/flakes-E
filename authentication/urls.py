@@ -1,8 +1,10 @@
 from django.urls import path
 from . import views
+from allauth.account.views import LoginView
+
 
 urlpatterns = [
     path('', views.auth_veiw, name='Auth'),
-    path('signup', views.sign_up_veiw, name='signup'),
-    path('login' , views.sign_in_veiw, name='login' )
+    path('signup/', views.sign_up_veiw, name='signup'),
+    path('login/' , LoginView.as_view(template_name='auth/sign-in.html'), name='login' )
 ]
