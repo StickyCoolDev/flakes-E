@@ -87,10 +87,14 @@
                 position: absolute;
                 top: 50%;
                 transform: translateY(-50%);
-                left: 15px;
+                left: 45px; /* Adjusted to accommodate icon */
                 color: #aaa;
                 font-size: 1.1em;
                 transition: color 0.2s ease, font-size 0.2s ease;
+                pointer-events: none; /* Make label non-interactive */
+                background-color: var(--background-light);
+                padding: 0 5px;
+                z-index: 2; /* Ensure label is above input */
             }
 
             .input-group input {
@@ -104,7 +108,7 @@
                 box-sizing: border-box;
                 transition: border-color 0.2s ease, box-shadow 0.2s ease;
             }
-            
+
             .input-group input:focus {
                 outline: none;
                 border-color: var(--primary-color);
@@ -113,9 +117,13 @@
 
             .input-group input:focus + label,
             .input-group input:not(:placeholder-shown) + label {
+                top: 0;
+                font-size: 0.8em;
+                transform: translateY(-50%);
+                left: 15px;
                 color: var(--primary-color);
+                padding: 0 5px;
             }
-
             .input-group .icon {
                 position: absolute;
                 left: 15px;
@@ -126,6 +134,18 @@
                 z-index: 1;
             }
 
+            /* This section is needed for a clean look with the new label behavior */
+            .input-group input:not(:placeholder-shown) + .icon {
+                color: var(--primary-color);
+            }
+
+            .form-error {
+                color: var(--dark-color);
+                font-size: 0.9em;
+                margin-top: -10px;
+                margin-bottom: 10px;
+            }
+            
             form {
                 width: 100%;
             }
@@ -192,6 +212,15 @@
             .or-divider:not(:empty)::after {
                 margin-left: .25em;
             }
+            .login-link {
+                margin-top: 15px;
+                color: var(--primary-color);
+            }
+            .login-link a {
+                color: var(--dark-color);
+                text-decoration: none;
+                font-weight: 600;
+            }
 
             @media (max-width: 600px) {
                 .logo h1 {
@@ -214,30 +243,27 @@
             </div>
             <div class="form-card">
                 <h2>Create Account</h2>
-                <form action="#" method="post">
-                    <div class="input-group">
-                        <input type="email" id="email" name="email" placeholder=" " required>
-                        <i class="fas fa-envelope icon"></i>
-                        <label for="email">Email</label>
+                {% if form.non_field_errors %}
+                    <div class="form-error">
+                        {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
                     </div>
-                    <div class="input-group">
-                        <input type="password"
-                               id="password"
-                               name="password"
-                               placeholder=" "
-                               required>
-                        <i class="fas fa-lock icon"></i>
-                        <label for="password">Password</label>
-                    </div>
-                    <div class="input-group">
-                        <input type="password"
-                               id="confirm-password"
-                               name="confirm-password"
-                               placeholder=" "
-                               required>
-                        <i class="fas fa-lock icon"></i>
-                        <label for="confirm-password">Confirm Password</label>
-                    </div>
+                {% endif %}
+                <form action="{% url 'account_signup' %}" method="post">
+                    {% csrf_token %}
+                    {% for field in form.visible_fields %}
+                        <div class="input-group">
+                            {% if field.name == 'email' %}
+                                <i class="fas fa-envelope icon"></i>
+                            {% elif field.name == 'password' or field.name == 'password2' %}
+                                <i class="fas fa-lock icon"></i>
+                            {% elif field.name == 'username' %}
+                                <i class="fas fa-user icon"></i>
+                            {% endif %}
+                            {{ field }}
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {% for error in field.errors %}<p class="form-error">{{ error }}</p>{% endfor %}
+                        </div>
+                    {% endfor %}
                     <div class="btn-group">
                         <button type="submit" class="btn btn-primary">Sign Up</button>
                     </div>
@@ -248,6 +274,11 @@
                         <i class="fab fa-google"></i>
                         Sign up with Google
                     </a>
+                </div>
+                <div class="login-link">
+                    <p>
+                        Already have an account? <a href="{% url 'account_login' %}">Log in here</a>
+                    </p>
                 </div>
             </div>
         </div>

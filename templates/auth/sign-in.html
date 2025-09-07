@@ -15,7 +15,8 @@
                 --primary-color: #BD632F;
                 --secondary-color: #D8973C;
                 --dark-color: #5A0002;
-                --text-light: #f9f9f9;                                                  --text-dark: #333;
+                --text-light: #f9f9f9;
+                --text-dark: #333;
                 --background-light: #FFFFFF;
             }
 
@@ -35,7 +36,7 @@
             .login-container {
                 width: 100%;
                 text-align: center;
-                max-width: 400px; /* Added max-width for better desktop display */
+                max-width: 400px;
             }
 
             .logo {
@@ -81,8 +82,8 @@
             }
 
             .input-group input {
-                width: calc(100% - 30px); /* Adjusted width to account for icon */
-                padding: 15px 15px 15px 45px; /* Adjust padding for icon */
+                width: calc(100% - 30px);
+                padding: 15px 15px 15px 45px;
                 border: 1px solid #ddd;
                 border-radius: 50px;
                 font-size: 1em;
@@ -103,6 +104,12 @@
                 transform: translateY(-50%);
                 color: #aaa;
                 pointer-events: none;
+            }
+            .form-error {
+                color: var(--dark-color);
+                font-size: 0.9em;
+                margin-top: -10px;
+                margin-bottom: 10px;
             }
 
             /* General form styling */
@@ -164,6 +171,16 @@
             .forgot-password a:hover {
                 text-decoration: underline;
             }
+            .signup-link {
+                margin-top: 15px;
+                color: var(--primary-color);
+            }
+
+            .signup-link a {
+                color: var(--dark-color);
+                text-decoration: none;
+                font-weight: 600;
+            }
 
             /* Responsive adjustments */
             @media (max-width: 600px) {
@@ -193,24 +210,39 @@
         <div class="login-container">
             <div class="logo">
                 <h1>Flakes E</h1>
-                <p>finished 10 seasons? good because we have 10 more</p>
+                <p>Finished 10 seasons? Good because we have 10 more</p>
             </div>
             <div class="login-content">
                 <h2>Log in</h2>
-                <form>
-                    <div class="input-group">
-                        <i class="fas fa-envelope icon"></i>
-                        <input type="email" placeholder="Email" required>
+                <!-- Display non-field errors from AllAuth -->
+                {% if form.non_field_errors %}
+                    <div class="form-error">
+                        {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
                     </div>
-                    <div class="input-group">
-                        <i class="fas fa-lock icon"></i>
-                        <input type="password" placeholder="Password" required>
-                    </div>
-                    <a href="">forgot-password</a>
+                {% endif %}
+                <form method="post" action="{% url 'account_login' %}">
+                    {% csrf_token %}
+                    {% for field in form.visible_fields %}
+                        <div class="input-group">
+                            {% if field.name == 'login' %}
+                                <i class="fas fa-envelope icon"></i>
+                            {% elif field.name == 'password' %}
+                                <i class="fas fa-lock icon"></i>
+                            {% endif %}
+                            {{ field }}
+                            {% for error in field.errors %}<p class="form-error">{{ error }}</p>{% endfor %}
+                        </div>
+                    {% endfor %}
+                    <a href="{% url 'account_reset_password' %}" class="forgot-password">Forgot password?</a>
                     <div class="btn-group">
-                        <button type="submit" class="btn btn-secondary">Log in</button>
+                        <button type="submit" class="btn btn-primary">Log in</button>
                     </div>
                 </form>
+                <div class="signup-link">
+                    <p>
+                        Don't have an account? <a href="{% url 'account_signup' %}">Sign up here</a>
+                    </p>
+                </div>
             </div>
         </div>
     </body>
