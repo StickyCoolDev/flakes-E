@@ -53,5 +53,6 @@ All commands:
 docker build -tag flakes:latest .
 docker run -p 8000:8000 flakes:latest
 ```
+The docker file uses **ASGI** 
 
 **_NOTE:_ The app will run on port 8000 on localhost and 0.0.0.0**
