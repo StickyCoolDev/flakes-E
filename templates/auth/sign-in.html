@@ -173,10 +173,11 @@
             }
             .signup-link {
                 margin-top: 15px;
+                color: var(--primary-color);
             }
 
             .signup-link a {
-                color: var(--primary-color);
+                color: var(--dark-color);
                 text-decoration: none;
                 font-weight: 600;
             }
@@ -209,7 +210,7 @@
         <div class="login-container">
             <div class="logo">
                 <h1>Flakes E</h1>
-                <p>finished 10 seasons? good because we have 10 more</p>
+                <p>Finished 10 seasons? Good because we have 10 more</p>
             </div>
             <div class="login-content">
                 <h2>Log in</h2>
@@ -221,17 +222,14 @@
                 {% endif %}
                 <form method="post" action="{% url 'account_login' %}">
                     {% csrf_token %}
-                    <!-- Loop through visible form fields to apply custom styling -->
                     {% for field in form.visible_fields %}
                         <div class="input-group">
-                            <!-- Use Font Awesome icons based on the field name -->
                             {% if field.name == 'login' %}
                                 <i class="fas fa-envelope icon"></i>
                             {% elif field.name == 'password' %}
                                 <i class="fas fa-lock icon"></i>
                             {% endif %}
                             {{ field }}
-                            <!-- Display field-specific errors -->
                             {% for error in field.errors %}<p class="form-error">{{ error }}</p>{% endfor %}
                         </div>
                     {% endfor %}
